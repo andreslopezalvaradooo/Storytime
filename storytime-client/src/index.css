@@ -1,0 +1,19 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark, retro;
+}
+
+/* Fill volume bar */
+@keyframes fill-bar {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+.animate-fill-bar {
+  animation: fill-bar 2s ease-in-out forwards;
+  transform-origin: left;
+}
