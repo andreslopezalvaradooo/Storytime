@@ -16,10 +16,12 @@ func main() {
 
 	r := gin.Default()
 
+	frontend := config.GetEnv("FRONTEND_URL")
+
 	r.Use(cors.New(cors.Config{
 		AllowHeaders: []string{"Origin", "Content-Type"},
 		AllowMethods: []string{"*"},
-		AllowOrigins: []string{"http://localhost:5173"},
+		AllowOrigins: []string{frontend},
 	}))
 
 	r.POST("/api/shortstory", handlers.CreateSS)
