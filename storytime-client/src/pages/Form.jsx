@@ -41,7 +41,9 @@ export const Form = () => {
 
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:3000/api/shortstory", {
+      const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+      const response = await fetch(`${BACKEND_URL}/api/shortstory`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
