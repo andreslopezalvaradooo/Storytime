@@ -51,7 +51,7 @@ var (
 	timeout    = 20 * time.Second
 	groqURL    = "https://api.groq.com/openai/v1/chat/completions"
 	httpClient = &http.Client{Timeout: 25 * time.Second}
-	modelName  = "llama-3.3-70b-versatile"
+	modelName  = "openai/gpt-oss-120b"
 	re         = regexp.MustCompile(`(?s)Title:\s*(.*?)\s*Beginning:\s*(.*?)\s*Middle:\s*(.*?)\s*End:\s*(.*)`)
 )
 
@@ -160,6 +160,7 @@ El personaje principal se llama %s y es un(a) %s.`,
 
 func parseStory(raw string) (ShortStory, error) {
 	matches := re.FindStringSubmatch(raw)
+
 	if len(matches) != 5 {
 		return ShortStory{}, errors.New("story format mismatch")
 	}
