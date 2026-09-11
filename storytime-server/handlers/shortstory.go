@@ -48,11 +48,11 @@ type Data struct {
 // )
 
 var (
-	timeout       = 20 * time.Second
-	openRouterURL = "https://openrouter.ai/api/v1/chat/completions"
-	httpClient    = &http.Client{Timeout: 25 * time.Second}
-	modelName     = "thinkingmachines/inkling-small:free"
-	re            = regexp.MustCompile(`(?s)Title:\s*(.*?)\s*Beginning:\s*(.*?)\s*Middle:\s*(.*?)\s*End:\s*(.*)`)
+	timeout    = 20 * time.Second
+	groqURL    = "https://api.groq.com/openai/v1/chat/completions"
+	httpClient = &http.Client{Timeout: 25 * time.Second}
+	modelName  = "llama-3.3-70b-versatile"
+	re         = regexp.MustCompile(`(?s)Title:\s*(.*?)\s*Beginning:\s*(.*?)\s*Middle:\s*(.*?)\s*End:\s*(.*)`)
 )
 
 func CreateSS(c *gin.Context) {
@@ -72,21 +72,21 @@ func CreateSS(c *gin.Context) {
 	// req.Header.Set("Content-Type", "application/json")
 	// req.Header.Set("Authorization", "Bearer "+config.GetEnv("DEEPINFRA_API_KEY"))
 
-	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, openRouterURL, strings.NewReader(string(body)))
+	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, groqURL, strings.NewReader(string(body)))
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer "+config.GetEnv("OPENROUTER_API_KEY"))
+	req.Header.Set("Authorization", "Bearer "+config.GetEnv("GROQ_API_KEY"))
 
 	res, err := httpClient.Do(req)
 	if err != nil {
 		// c.JSON(http.StatusBadGateway, gin.H{"error": "DeepInfra unreachable!", "detail": err.Error()})
-		c.JSON(http.StatusBadGateway, gin.H{"error": "OpenRouter unreachable!", "detail": err.Error()})
+		c.JSON(http.StatusBadGateway, gin.H{"error": "Groq unreachable!", "detail": err.Error()})
 		return
 	}
 	defer res.Body.Close()
 
 	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusMultipleChoices {
 		// c.JSON(http.StatusBadGateway, gin.H{"error": "DeepInfra returned status", "status": res.Status})
-		c.JSON(http.StatusBadGateway, gin.H{"error": "OpenRouter returned status", "status": res.Status})
+		c.JSON(http.StatusBadGateway, gin.H{"error": "Groq returned status", "status": res.Status})
 		return
 	}
 
