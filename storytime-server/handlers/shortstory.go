@@ -39,12 +39,20 @@ type Data struct {
 	CreatedAt  time.Time `bson:"createdAt" json:"createdAt"`
 }
 
+// var (
+// 	timeout      = 20 * time.Second
+// 	deepInfraURL = "https://api.deepinfra.com/v1/openai/chat/completions"
+// 	httpClient   = &http.Client{Timeout: 25 * time.Second}
+// 	modelName    = "mistralai/Mistral-7B-Instruct-v0.3"
+// 	re           = regexp.MustCompile(`(?s)Title:\s*(.*?)\s*Beginning:\s*(.*?)\s*Middle:\s*(.*?)\s*End:\s*(.*)`)
+// )
+
 var (
-	timeout      = 20 * time.Second
-	deepInfraURL = "https://api.deepinfra.com/v1/openai/chat/completions"
-	httpClient   = &http.Client{Timeout: 25 * time.Second}
-	modelName    = "mistralai/Mistral-7B-Instruct-v0.3"
-	re           = regexp.MustCompile(`(?s)Title:\s*(.*?)\s*Beginning:\s*(.*?)\s*Middle:\s*(.*?)\s*End:\s*(.*)`)
+	timeout       = 20 * time.Second
+	openRouterURL = "https://openrouter.ai/api/v1/chat/completions"
+	httpClient    = &http.Client{Timeout: 25 * time.Second}
+	modelName     = "mistralai/mistral-7b-instruct:free"
+	re            = regexp.MustCompile(`(?s)Title:\s*(.*?)\s*Beginning:\s*(.*?)\s*Middle:\s*(.*?)\s*End:\s*(.*)`)
 )
 
 func CreateSS(c *gin.Context) {
@@ -60,19 +68,25 @@ func CreateSS(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), timeout)
 	defer cancel()
 
-	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, deepInfraURL, strings.NewReader(string(body)))
+	// req, _ := http.NewRequestWithContext(ctx, http.MethodPost, deepInfraURL, strings.NewReader(string(body)))
+	// req.Header.Set("Content-Type", "application/json")
+	// req.Header.Set("Authorization", "Bearer "+config.GetEnv("DEEPINFRA_API_KEY"))
+
+	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, openRouterURL, strings.NewReader(string(body)))
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer "+config.GetEnv("DEEPINFRA_API_KEY"))
+	req.Header.Set("Authorization", "Bearer "+config.GetEnv("OPENROUTER_API_KEY"))
 
 	res, err := httpClient.Do(req)
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{"error": "DeepInfra unreachable!", "detail": err.Error()})
+		// c.JSON(http.StatusBadGateway, gin.H{"error": "DeepInfra unreachable!", "detail": err.Error()})
+		c.JSON(http.StatusBadGateway, gin.H{"error": "OpenRouter unreachable!", "detail": err.Error()})
 		return
 	}
 	defer res.Body.Close()
 
 	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusMultipleChoices {
-		c.JSON(http.StatusBadGateway, gin.H{"error": "DeepInfra returned status", "status": res.Status})
+		// c.JSON(http.StatusBadGateway, gin.H{"error": "DeepInfra returned status", "status": res.Status})
+		c.JSON(http.StatusBadGateway, gin.H{"error": "OpenRouter returned status", "status": res.Status})
 		return
 	}
 
