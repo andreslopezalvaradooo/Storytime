@@ -51,7 +51,7 @@ var (
 	timeout       = 20 * time.Second
 	openRouterURL = "https://openrouter.ai/api/v1/chat/completions"
 	httpClient    = &http.Client{Timeout: 25 * time.Second}
-	modelName     = "mistralai/mistral-7b-instruct:free"
+	modelName     = "thinkingmachines/inkling-small:free"
 	re            = regexp.MustCompile(`(?s)Title:\s*(.*?)\s*Beginning:\s*(.*?)\s*Middle:\s*(.*?)\s*End:\s*(.*)`)
 )
 
