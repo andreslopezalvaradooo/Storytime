@@ -38,6 +38,8 @@ function App() {
             </label>
 
             <h1 className="pl-2 text-4xl font-bold">STORYTIME</h1>
+
+            <img src="/storytime-icon.svg" alt="" className="pl-2 h-8" />
           </nav>
 
           {/* Page content here */}
@@ -53,6 +55,8 @@ function App() {
 
           <div className="p-2 flex flex-col gap-4 min-h-full justify-center items-center bg-base-200 is-drawer-close:hidden is-drawer-open:sm:w-96">
             {/* Sidebar content here */}
+            <img src="/storytime-icon.svg" alt="" />
+
             <h2 className="text-2xl font-semibold">Choose the parameters</h2>
 
             <Form />
