@@ -18,8 +18,8 @@ export const usePageTexture = ({ title, image, text, size = 1024 }) => {
     const ctx = canvasRef.current.getContext("2d");
     const bgMargin = size * 0.05;
     const spineMargin = size * 0.04;
-    // const textML = size * 0.12;
-    const textML = spineMargin + size * 0.08;
+    const SPINE_SAFE_MARGIN_RATIO = 0.16;
+    const textML = size * SPINE_SAFE_MARGIN_RATIO;
     const hasTitle = !!title;
     const hasImage = !!image;
     const hasText = !!text;
