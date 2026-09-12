@@ -1,5 +1,6 @@
 import "./App.css";
 import { BookViewer } from "./features/3DBook/BookViewer";
+import { TestBookViewer } from "./features/Test3DBook/TestBookViewer";
 import { Form } from "./pages/Form";
 
 function App() {
@@ -13,7 +14,6 @@ function App() {
         />
 
         <div className="drawer-content">
-          {/* Navbar */}
           <nav className="navbar w-full bg-base-300">
             <label
               htmlFor="my-drawer-4"
@@ -42,8 +42,8 @@ function App() {
             <img src="/storytime-icon.svg" alt="" className="pl-2 h-8" />
           </nav>
 
-          {/* Page content here */}
-          <BookViewer />
+          {/* <BookViewer /> */}
+          <TestBookViewer />
         </div>
 
         <div className="drawer-side is-drawer-close:overflow-visible">
@@ -54,11 +54,8 @@ function App() {
           ></label>
 
           <div className="p-2 flex flex-col gap-4 min-h-full justify-center items-center bg-base-200 is-drawer-close:hidden is-drawer-open:sm:w-96">
-            {/* Sidebar content here */}
             <img src="/storytime-icon.svg" alt="" />
-
             <h2 className="text-2xl font-semibold">Choose the parameters</h2>
-
             <Form />
           </div>
         </div>

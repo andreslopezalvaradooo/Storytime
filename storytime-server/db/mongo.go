@@ -3,11 +3,13 @@ package db
 import (
 	"context"
 	"log"
-	"storytime/config"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
+
+	"storytime/config"
 )
 
 var (
@@ -16,17 +18,16 @@ var (
 )
 
 func ConnectMongo() {
-	uri := config.GetEnv("MONGODB_URI")
-
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-
+	uri := config.GetEnv("MONGODB_URI")
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
+
 	if err != nil {
 		log.Fatal("❌ Error connecting to MongoDB Atlas: ", err)
 	}
 
-	if err := client.Ping(ctx, nil); err != nil {
+	if err := client.Ping(ctx, readpref.Primary()); err != nil {
 		log.Fatal("❌ Ping to MongoDB Atlas failed: ", err)
 	}
 
@@ -41,7 +42,8 @@ func DisconnectMongo() {
 
 	if err := Client.Disconnect(ctx); err != nil {
 		log.Println("❌ Error disconnecting from MongoDB: ", err)
-	} else {
-		log.Println("🛑 MongoDB disconnected!")
+		return
 	}
+	
+	log.Println("🛑 MongoDB disconnected!")
 }

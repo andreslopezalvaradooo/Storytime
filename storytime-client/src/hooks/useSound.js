@@ -40,7 +40,6 @@ export const useSound = () => {
 
     localStorage.setItem("sb-vol", volume);
     localStorage.setItem("sb-muted", muted);
-    // localStorage.setItem("sb-muted", JSON.stringify(muted));
   }, [volume, muted]);
 
   const playSound = useCallback((name) => {

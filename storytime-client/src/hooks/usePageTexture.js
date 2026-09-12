@@ -28,8 +28,8 @@ export const usePageTexture = ({ title, image, text, size = 1024 }) => {
       hasTitle && !hasImage && !hasText
         ? "book-cover"
         : hasImage || hasText
-        ? "book-page"
-        : "book-back";
+          ? "book-page"
+          : "book-back";
 
     const drawBg = (next) => {
       ctx.clearRect(0, 0, size, size);
@@ -89,9 +89,18 @@ export const usePageTexture = ({ title, image, text, size = 1024 }) => {
       texRef.current.needsUpdate = true;
     };
 
-    const drawImagePage = () => {
+    const resolveImageSrc = (value) =>
+      /^https?:\/\//i.test(value) ? value : `/textures/${value}.jpg`;
+
+    const loadImage = (src) => {
       const img = new Image();
-      img.src = `/textures/${image}.jpg`;
+      if (/^https?:\/\//i.test(src)) img.crossOrigin = "anonymous";
+      img.src = src;
+      return img;
+    };
+
+    const drawImagePage = () => {
+      const img = loadImage(resolveImageSrc(image));
 
       img.onload = () => {
         const maxW = size - bgMargin * 2;
@@ -105,14 +114,16 @@ export const usePageTexture = ({ title, image, text, size = 1024 }) => {
           w = h * ratio;
         }
 
-        // const x = (size - w) / 2;
         const x = (size - w) / 2 - spineMargin / 2;
         const y = (size - h) / 2;
         ctx.drawImage(img, x, y, w, h);
         texRef.current.needsUpdate = true;
       };
 
-      img.onerror = () => (texRef.current.needsUpdate = true);
+      img.onerror = () => {
+        console.warn(`No se pudo cargar la imagen de la página: ${img.src}`);
+        texRef.current.needsUpdate = true;
+      };
     };
 
     const drawTextPage = () => {
@@ -149,7 +160,7 @@ export const usePageTexture = ({ title, image, text, size = 1024 }) => {
         else {
           const wordsW = parts.reduce(
             (s, p) => s + ctx.measureText(p).width,
-            0
+            0,
           );
 
           const gap = (maxW - wordsW) / (parts.length - 1);

@@ -9,14 +9,14 @@ const getZ = (w) =>
   w >= 1536
     ? 3
     : w >= 1280
-    ? 3.5
-    : w >= 1024
-    ? 4
-    : w >= 768
-    ? 4.5
-    : w >= 640
-    ? 5.5
-    : 9;
+      ? 3.5
+      : w >= 1024
+        ? 4
+        : w >= 768
+          ? 4.5
+          : w >= 640
+            ? 5.5
+            : 9;
 
 const ResponsiveCameraZ = () => {
   const { camera, size } = useThree();

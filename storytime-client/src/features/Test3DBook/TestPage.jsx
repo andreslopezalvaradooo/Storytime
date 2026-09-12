@@ -137,7 +137,7 @@ export const TestPage = ({
         "x",
         foldX * foldIntensity,
         easingFactorFold,
-        delta
+        delta,
       );
     }
   });

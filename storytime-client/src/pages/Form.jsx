@@ -5,13 +5,13 @@ import { pagesAtom } from "../atoms/atoms";
 const storyToPages = (story) => [
   { title: story.shortStory.title },
 
-  { image: "DSC00983" },
+  { image: story.images.beginning },
   { text: story.shortStory.beginning },
 
-  { image: "DSC01103" },
+  { image: story.images.middle },
   { text: story.shortStory.middle },
 
-  { image: "DSC02069" },
+  { image: story.images.end },
   { text: story.shortStory.end },
 
   {},
@@ -35,7 +35,7 @@ export const Form = () => {
 
   const handleGenerateStory = async () => {
     if (!form.characterName || !form.characterType || error) {
-      alert("Por favor completa todos los campos correctamente.");
+      alert("Please fill in all fields correctly!.");
       return;
     }
 
@@ -51,12 +51,11 @@ export const Form = () => {
 
       if (!response.ok) {
         const err = await response.json();
-        console.error("Error del servidor:", err);
+        console.error("Server error:", err);
         return;
       }
 
       const data = await response.json();
-      console.log("Story:", data);
       setPages(storyToPages(data));
     } catch (error) {
       console.error("Error generating story:", error);
@@ -69,11 +68,9 @@ export const Form = () => {
     setForm((prev) => ({ ...prev, [field]: value }));
 
     if (field === "characterName") {
-      if (/^[A-Za-z]/.test(value) && value.length >= 3) {
+      if (/^[A-Za-z]/.test(value) && value.length >= 3)
         setError(!pattern.test(value));
-      } else {
-        setError(false);
-      }
+      else setError(false);
     }
   };
 
@@ -166,7 +163,7 @@ export const Form = () => {
         value={form.characterName}
         onChange={(e) => handleChange("characterName", e.target.value)}
       />
-      
+
       {error && (
         <p className="validator-hint">
           Must begin with a letter

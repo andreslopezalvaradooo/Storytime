@@ -5,10 +5,13 @@ import { useEffect, useRef, useState } from "react";
 import { useSound } from "../../hooks/useSound";
 import { TestPage } from "./TestPage";
 
+const resolveTextureSrc = (value) =>
+  /^https?:\/\//i.test(value) ? value : `/textures/${value}.jpg`;
+
 const preloadBg = (leaves) =>
   leaves.flat().forEach((p) => {
-    p?.background && useTexture.preload(`/textures/${p.background}.jpg`);
-    p?.image && useTexture.preload(`/textures/${p.image}.jpg`);
+    if (p?.background) useTexture.preload(resolveTextureSrc(p.background));
+    if (p?.image) useTexture.preload(resolveTextureSrc(p.image));
   });
 
 export const TestBook = (props) => {
@@ -29,7 +32,7 @@ export const TestBook = (props) => {
 
     timeout.current = setTimeout(
       () => setCurrent((p) => (page > p ? p + 1 : p - 1)),
-      Math.abs(page - current) > 2 ? 50 : 150
+      Math.abs(page - current) > 2 ? 50 : 150,
     );
 
     return () => clearTimeout(timeout.current);
