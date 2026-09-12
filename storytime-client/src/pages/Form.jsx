@@ -78,124 +78,121 @@ export const Form = () => {
   };
 
   return (
-    <div className="p-4 max-w-3xl mx-auto space-y-4">
-      <h1 className="text-4xl font-bold text-center">STORYTIME</h1>
+    <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
+      <label className="label">Age (years)</label>
+      <div className="join">
+        {["2 - 4", "5 - 6", "7 - 8", "9 - 10"].map((a) => (
+          <input
+            key={a}
+            className="join-item btn"
+            type="radio"
+            name="age"
+            aria-label={a}
+            checked={form.age === a}
+            onChange={() => handleChange("age", a)}
+          />
+        ))}
+      </div>
 
-      <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-        <label className="label">Age (years)</label>
-        <div className="join">
-          {["2 - 4", "5 - 6", "7 - 8", "9 - 10"].map((a) => (
-            <input
-              key={a}
-              className="join-item btn"
-              type="radio"
-              name="age"
-              aria-label={a}
-              checked={form.age === a}
-              onChange={() => handleChange("age", a)}
-            />
-          ))}
-        </div>
+      <label className="label">Language</label>
+      <select
+        className="select select-ghost"
+        value={form.language}
+        onChange={(e) => handleChange("language", e.target.value)}
+      >
+        {[
+          "English",
+          "Spanish",
+          "French",
+          "German",
+          "Italian",
+          "Portuguese",
+        ].map((l) => (
+          <option key={l}>{l}</option>
+        ))}
+      </select>
 
-        <label className="label">Language</label>
-        <select
-          className="select select-ghost"
-          value={form.language}
-          onChange={(e) => handleChange("language", e.target.value)}
-        >
-          {[
-            "English",
-            "Spanish",
-            "French",
-            "German",
-            "Italian",
-            "Portuguese",
-          ].map((l) => (
-            <option key={l}>{l}</option>
-          ))}
-        </select>
+      <label className="label">Genre</label>
+      <select
+        className="select select-ghost"
+        value={form.genre}
+        onChange={(e) => handleChange("genre", e.target.value)}
+      >
+        {[
+          "Fairy Tale",
+          "Fable",
+          "Fantasy",
+          "Adventure",
+          "Science Fiction",
+          "Realistic Fiction",
+          "Mystery",
+          "Moral Tale",
+        ].map((g) => (
+          <option key={g}>{g}</option>
+        ))}
+      </select>
 
-        <label className="label">Genre</label>
-        <select
-          className="select select-ghost"
-          value={form.genre}
-          onChange={(e) => handleChange("genre", e.target.value)}
-        >
-          {[
-            "Fairy Tale",
-            "Fable",
-            "Fantasy",
-            "Adventure",
-            "Science Fiction",
-            "Realistic Fiction",
-            "Mystery",
-            "Moral Tale",
-          ].map((g) => (
-            <option key={g}>{g}</option>
-          ))}
-        </select>
+      <label className="label">Tone</label>
+      <select
+        className="select select-ghost"
+        value={form.tone}
+        onChange={(e) => handleChange("tone", e.target.value)}
+      >
+        {[
+          "Playful",
+          "Warm",
+          "Funny",
+          "Mysterious",
+          "Adventurous",
+          "Magical",
+          "Peaceful",
+          "Emotional",
+          "Inspiring",
+          "Gentle",
+        ].map((t) => (
+          <option key={t}>{t}</option>
+        ))}
+      </select>
 
-        <label className="label">Tone</label>
-        <select
-          className="select select-ghost"
-          value={form.tone}
-          onChange={(e) => handleChange("tone", e.target.value)}
-        >
-          {[
-            "Playful",
-            "Warm",
-            "Funny",
-            "Mysterious",
-            "Adventurous",
-            "Magical",
-            "Peaceful",
-            "Emotional",
-            "Inspiring",
-            "Gentle",
-          ].map((t) => (
-            <option key={t}>{t}</option>
-          ))}
-        </select>
+      <label className="label">Character Name</label>
+      <input
+        type="text"
+        className={`input ${error ? "validator" : ""}`}
+        required
+        placeholder="Type the name of the main character"
+        minLength="3"
+        maxLength="20"
+        title="Only letters, numbers or dash"
+        value={form.characterName}
+        onChange={(e) => handleChange("characterName", e.target.value)}
+      />
+      
+      {error && (
+        <p className="validator-hint">
+          Must begin with a letter
+          <br />
+          Must be 3 to 20 characters
+          <br />
+          Containing only letters, numbers or dash
+        </p>
+      )}
 
-        <label className="label">Character Name</label>
-        <input
-          type="text"
-          className={`input ${error ? "validator" : ""}`}
-          required
-          placeholder="Type the name of the main character"
-          minLength="3"
-          maxLength="20"
-          title="Only letters, numbers or dash"
-          value={form.characterName}
-          onChange={(e) => handleChange("characterName", e.target.value)}
-        />
-        {error && (
-          <p className="validator-hint">
-            Must begin with a letter
-            <br />
-            Must be 3 to 20 characters
-            <br />
-            Containing only letters, numbers or dash
-          </p>
-        )}
+      <label className="label">Character Type</label>
+      <input
+        type="text"
+        className="input"
+        placeholder="e.g. Dragon, Robot, Child..."
+        value={form.characterType}
+        onChange={(e) => handleChange("characterType", e.target.value)}
+      />
 
-        <label className="label">Character Type</label>
-        <input
-          type="text"
-          className="input"
-          placeholder="e.g. Dragon, Robot, Child..."
-          value={form.characterType}
-          onChange={(e) => handleChange("characterType", e.target.value)}
-        />
-
-        <button
-          className="btn"
-          onClick={handleGenerateStory}
-          disabled={loading || error}
-        >
-          {loading ? "Creating..." : "Create Story"}
-        </button>
-      </fieldset>
-    </div>
+      <button
+        className="btn"
+        onClick={handleGenerateStory}
+        disabled={loading || error}
+      >
+        {loading ? "Creating..." : "Create Story"}
+      </button>
+    </fieldset>
   );
 };

@@ -11,7 +11,7 @@ export const SoundControls = () => {
   };
 
   return (
-    <div className="absolute top-4 right-4 z-50 p-3 flex items-center gap-2 bg-amber-900/80 border border-[#d6c5a7]/40 shadow-[0_4px_6px_rgba(0,0,0,0.3)] backdrop-blur-sm rounded-xl select-none">
+    <div className="absolute top-18 right-2 z-10 p-3 flex items-center gap-2 bg-amber-900/80 border border-[#d6c5a7]/40 shadow-[0_4px_6px_rgba(0,0,0,0.3)] backdrop-blur-sm rounded-xl select-none">
       <button
         onClick={toggleMute}
         title={muted ? "Activate" : "Mute"}
